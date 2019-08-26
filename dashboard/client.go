@@ -70,17 +70,17 @@ func (c *Client) BrakeRelease() (bool, error) {
 
 //LoadProgram file
 func (c *Client) LoadProgram(urpFilePath string) (bool, error) {
-	return c.sendHasPrefix("load "+urpFilePath, "loading program:")
+	return c.sendHasPrefix("load "+urpFilePath, "loading program: ")
 }
 
 //GetProgram - returns program path
 func (c *Client) GetProgram() (string, bool, error) {
-	return c.sendHasPrefixString("get loaded program", "loaded program:")
+	return c.sendHasPrefixString("get loaded program", "loaded program: ")
 }
 
 //LoadInstallation file
 func (c *Client) LoadInstallation(installationFilePath string) (bool, error) {
-	return c.sendHasPrefix("load installation "+installationFilePath, "loading installation:")
+	return c.sendHasPrefix("load installation "+installationFilePath, "loading installation: ")
 }
 
 //Play program
@@ -103,8 +103,8 @@ func (c *Client) Shutdown() (bool, error) {
 	return c.sendHasPrefix("shutdown", "shutting down")
 }
 
-//Running returns true if in running state
-func (c *Client) Running() (bool, error) {
+//IsRunning returns true if in running state
+func (c *Client) IsRunning() (bool, error) {
 	return c.sendHasPrefix("running", "program running: true")
 }
 
@@ -126,6 +126,31 @@ func (c *Client) ClosePopup() (bool, error) {
 
 }
 
+//SafetyClosePopup - closes safety popup dialog
+func (c *Client) SafetyClosePopup() (bool, error) {
+	return c.sendHasPrefix("close safety popup", "closing safety popup")
+}
+
+//SafetyRestart - restarts robot safety subsystem
+func (c *Client) SafetyRestart() (bool, error) {
+	return c.sendHasPrefix("restart safety", "restarting safety")
+}
+
+//SafetyUnlockProtectiveStop - unlocks protective stop
+func (c *Client) SafetyUnlockProtectiveStop() (bool, error) {
+	return c.sendHasPrefix("unlock protective stop", "Protective stop releasing")
+}
+
+//SafetyMode - returns safety mode
+func (c *Client) SafetyMode() (SafetyMode, error) {
+	result, _, err := c.sendHasPrefixString("safetymode", "safetymode: ")
+	if err != nil {
+		return SafetyModeUndefined, err
+	}
+
+	return safetyMode(result), nil
+}
+
 //Log message
 func (c *Client) Log(msg string) (bool, error) {
 	return c.sendHasPrefix("addToLog "+msg, "added log message")
@@ -139,10 +164,10 @@ func (c *Client) IsProgramSaved() (bool, error) {
 //GetProgramState - returns current program state
 func (c *Client) GetProgramState() (ProgramState, error) {
 	result, err := c.sendString("programState")
-	splited := strings.Split(result, " ")
 	if err != nil {
 		return ProgramStateUndefined, err
 	}
+	splited := strings.Split(result, " ")
 	return programState(splited[0]), nil
 }
 

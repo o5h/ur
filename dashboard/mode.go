@@ -1,7 +1,7 @@
 package dashboard
 
 //Mode - robot mode
-type Mode int8
+type Mode uint8
 
 const (
 	ModeUndefined Mode = iota

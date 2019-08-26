@@ -32,13 +32,18 @@ func TestClient(tt *testing.T) {
 	tt.Log("mode = ", mode)
 	t.testTrue(mode == dashboard.ModePowerOff, err)
 	t.testTrue(client.Stop())
-	t.testFalse(client.Running())
+	t.testFalse(client.IsRunning())
 
 	t.testTrue(client.ShowPopup("Hello"))
 	t.testTrue(client.ClosePopup())
+	t.testTrue(client.SafetyClosePopup())
 
 	t.testTrue(client.IsProgramSaved())
 	tt.Log(client.GetProgramState())
+
+	client.Log("Message")
+
+	tt.Log(client.SafetyMode())
 
 	//t.testTrue(client.PowerOff())
 
