@@ -40,15 +40,15 @@ func TestClient(tt *testing.T) {
 
 	t.testTrue(client.IsProgramSaved())
 	tt.Log(client.GetProgramState())
-
 	client.Log("Message")
-
 	tt.Log(client.SafetyMode())
+	t.testTrue(client.SafetyRestart())
+	t.testTrue(client.SafetyUnlockProtectiveStop())
 
 	//t.testTrue(client.PowerOff())
 
 	//	client.Shutdown()
-	tt.Fail()
+	//tt.Fail()
 }
 
 func (t *TT) testTrue(b bool, err error) {
