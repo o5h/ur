@@ -45,7 +45,7 @@ func TestClient(tt *testing.T) {
 	t.testTrue(client.SafetyRestart())
 	t.testTrue(client.SafetyUnlockProtectiveStop())
 
-	//t.testTrue(client.PowerOff())
+	t.testTrue(client.PowerOff())
 
 	//	client.Shutdown()
 	//tt.Fail()
